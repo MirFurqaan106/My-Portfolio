@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mir Furkaan — Data Analyst Portfolio. Python, SQL, Power BI, Machine Learning." />
+  <title>Mir Furqaan | Data Analyst Portfolio</title>
+
+  <!-- Favicon (emoji fallback) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================
+       NAVBAR
+       ============================================ -->
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="container nav-container">
+      <a href="#home" class="logo" aria-label="Mir Furkaan home">MF<span>.</span></a>
+
+      <div class="nav-links" role="menubar">
+        <a href="#home"           role="menuitem">Home</a>
+        <a href="#about"          role="menuitem">About</a>
+        <a href="#skills"         role="menuitem">Skills</a>
+        <a href="#projects"       role="menuitem">Projects</a>
+        <a href="#certifications" role="menuitem">Certifications</a>
+        <a href="#contact"        role="menuitem">Contact</a>
+      </div>
+
+      <button class="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" role="menu" aria-hidden="true">
+      <a href="#home"           role="menuitem">Home</a>
+      <a href="#about"          role="menuitem">About</a>
+      <a href="#skills"         role="menuitem">Skills</a>
+      <a href="#projects"       role="menuitem">Projects</a>
+      <a href="#certifications" role="menuitem">Certifications</a>
+      <a href="#resume"         role="menuitem">Resume</a>
+      <a href="#contact"        role="menuitem">Contact</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero" id="home" aria-label="Hero section">
+      <div class="container hero-content">
+
+        <div class="hero-text">
+          <div class="hero-badge">
+            <span class="dot" aria-hidden="true"></span>
+            Available for opportunities
+          </div>
+
+          <h1>Hi, I'm <span class="name">Mir Furqaan</span></h1>
+
+          <div class="typing-wrapper" aria-live="polite">
+            <span id="typing-text"></span><span class="cursor" aria-hidden="true"></span>
+          </div>
+
+          <p>
+            MCA graduate from Lovely Professional University with a strong passion
+            for Data Analytics, Business Intelligence, and Machine Learning.
+            Skilled in Python, SQL, Power BI, and data visualization, with hands-on
+            experience in transforming complex datasets into actionable business insights.
+          </p>
+
+          <div class="btn-group">
+            <a href="#projects" class="btn btn-primary">
+              <i class="fas fa-chart-bar" aria-hidden="true"></i> View Projects
+            </a>
+            <a href="./Mir_Furqaan_Hassan_Resume_.pdf" download class="btn btn-outline" aria-label="Download resume PDF">
+              <i class="fas fa-download" aria-hidden="true"></i> Download Resume
+            </a>
+          </div>
+
+          <div class="hero-stats" aria-label="Key statistics">
+            <div class="stat">
+              <strong>10+</strong>
+              <span>Projects</span>
+            </div>
+            <div class="stat">
+              <strong>5+</strong>
+              <span>Certifications</span>
+            </div>
+            <div class="stat">
+              <strong>3+</strong>
+              <span>Technologies</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-image">
+          <div class="img-ring">
+            <img
+              src="./picture.jpeg"
+              alt="Mir Furkaan — Data Analyst"
+              loading="eager"
+              width="340"
+              height="340"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================
+         ABOUT
+         ============================================ -->
+    <section id="about" aria-labelledby="about-title">
+      <div class="container">
+        <h2 class="section-title" id="about-title">About <span>Me</span></h2>
+
+        <div class="about-grid">
+
+          <div class="about-left">
+            <div class="glass-card reveal">
+              <h3><i class="fas fa-user" aria-hidden="true"></i> Who Am I?</h3>
+              <p>
+                I'm Mir Furkaan from Kashmir, a Master of Computer Applications (MCA)
+                graduate from Lovely Professional University. I specialize in Data Analytics,
+                Business Intelligence, Data Visualization, and Machine Learning.
+                I enjoy transforming raw data into meaningful insights that help organizations
+                make informed decisions and improve business performance.
+              </p>
+            </div>
+
+            <div class="glass-card reveal">
+              <h3><i class="fas fa-bullseye" aria-hidden="true"></i> Career Objective</h3>
+              <p>
+                Seeking a challenging opportunity as a Data Analyst where I can apply
+                my analytical, technical, and problem-solving skills to extract valuable
+                insights from data, contribute to business growth, and continuously enhance
+                my expertise in data-driven decision making.
+              </p>
+            </div>
+
+            <div class="glass-card reveal">
+              <h3><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Details</h3>
+              <p>📍 Kashmir, India &nbsp;|&nbsp; 🎓 MCA — LPU &nbsp;|&nbsp; 💼Open to Full-Time Opportunities</p>
+            </div>
+          </div>
+
+          <div class="about-right">
+
+            <div class="detail-card reveal">
+              <h3><i class="fas fa-graduation-cap" aria-hidden="true"></i> Education</h3>
+              <div class="timeline">
+                <div class="tl-item">
+                  <span class="tl-dot" aria-hidden="true"></span>
+                  <div>
+                    <h4>Master of Computer Applications (MCA)</h4>
+                    <p>Lovely Professional University, Punjab</p>
+                    <span class="tl-year">2023 – 2025</span>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <span class="tl-dot" aria-hidden="true"></span>
+                  <div>
+                    <h4>Bachelors in Information Technology (BSC IT)</h4>
+                    <p>University of Kashmir</p>
+                    <span class="tl-year">2020 – 2023</span>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <span class="tl-dot" aria-hidden="true"></span>
+                  <div>
+                    <h4>Higher Secondary (12th) — Science</h4>
+                    <p>J&K Board of School Education</p>
+                    <span class="tl-year">2018</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-card reveal">
+              <h3><i class="fas fa-briefcase" aria-hidden="true"></i> Experience</h3>
+              <div class="timeline">
+                <div class="tl-item">
+                  <span class="tl-dot" aria-hidden="true"></span>
+                  <div>
+                    <h4>Data Analytics Intern</h4>
+                    <p>Freelance / Academic Projects — Python, SQL, Power BI</p>
+                    <span class="tl-year">2024 – Present</span>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <span class="tl-dot" aria-hidden="true"></span>
+                  <div>
+                    <h4>Front-End Developer (Academic)</h4>
+                    <p>React-based dashboard projects — HTML, CSS, JavaScript</p>
+                    <span class="tl-year">2023 – 2024</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SKILLS
+         ============================================ -->
+    <section id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <h2 class="section-title" id="skills-title">Technical <span>Skills</span></h2>
+
+        <div class="skills-grid">
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="Python">🐍</span>
+            <h4>Python</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="88%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="SQL">🗄️</span>
+            <h4>SQL</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="85%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="Power BI">📊</span>
+            <h4>Power BI</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="82%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="Excel">📗</span>
+            <h4>Excel</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="90%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="Pandas">🐼</span>
+            <h4>Pandas</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="85%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="NumPy">🔢</span>
+            <h4>NumPy</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="80%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="Machine Learning">🤖</span>
+            <h4>Machine Learning</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="72%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="React">⚛️</span>
+            <h4>React</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="75%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="HTML">🌐</span>
+            <h4>HTML</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="92%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="CSS">🎨</span>
+            <h4>CSS</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="88%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-icon" role="img" aria-label="JavaScript">⚡</span>
+            <h4>JavaScript</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="78%"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PROJECTS
+         ============================================ -->
+    <section id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <h2 class="section-title" id="projects-title">Featured <span>Projects</span></h2>
+
+        <div class="projects-grid">
+
+          <!-- Project 1 -->
+          <article class="project-card reveal">
+            <div class="project-img-wrap">
+              <img
+                src="./assets/images/ecommerce_sales.jpg"
+                alt="E-Commerce Sales Analytics Dashboard screenshot"
+                loading="lazy"
+                width="600" height="200"
+              />
+              <span class="project-badge">Dashboard</span>
+            </div>
+            <div class="project-body">
+              <h3>E-Commerce Sales Analytics Dashboard</h3>
+              <p>
+                Interactive dashboard analyzing online sales data. Evaluates monthly revenue growth,
+                customer acquisition costs, product category performance, and regional sales distribution
+                to drive business decisions.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-tag">SQL</span>
+                <span class="tech-tag">Power BI</span>
+                <span class="tech-tag">Excel</span>
+                <span class="tech-tag">DAX</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/MirFurqaan106/E-Commerce-Sales-Analytics-Dashboard" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View E-Commerce Sales Dashboard on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                </a>
+                <a href="./assets/images/ecommerce_sales.jpg" target="_blank" class="link-demo" aria-label="View E-Commerce Sales Dashboard demo picture">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card reveal">
+            <div class="project-img-wrap">
+              <img
+                src="./assets/images/healthcare_analytics.jpg"
+                alt="Healthcare Analytics dashboard screenshot"
+                loading="lazy"
+                width="600" height="200"
+              />
+              <span class="project-badge">Data Analytics</span>
+            </div>
+            <div class="project-body">
+              <h3>Healthcare Analytics</h3>
+              <p>
+                A comprehensive data analysis project evaluating patient admission patterns, treatment
+                outcomes, and resource utilization across hospital departments to optimize operational efficiency.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">SQL</span>
+                <span class="tech-tag">Pandas</span>
+                <span class="tech-tag">Seaborn</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/MirFurqaan106/Healthcare-Analytics" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View Healthcare Analytics on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                </a>
+                <a href="./assets/images/healthcare_analytics.jpg" target="_blank" class="link-demo" aria-label="View Healthcare Analytics demo picture">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card reveal">
+            <div class="project-img-wrap">
+              <img
+                src="./assets/images/hotel_booking.jpg"
+                alt="Hotel Booking Dashboard screenshot"
+                loading="lazy"
+                width="600" height="200"
+              />
+              <span class="project-badge">Dashboard</span>
+            </div>
+            <div class="project-body">
+              <h3>Hotel Booking Dashboard</h3>
+              <p>
+                Developed a fully responsive hotel booking analytics dashboard using React and Recharts,
+                visualising booking trends, occupancy rates, and revenue metrics in real time.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Recharts</span>
+                <span class="tech-tag">CSS</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/MirFurqaan106/Hotel-Booking-Dashboard" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View Hotel Booking Dashboard on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                </a>
+                <a href="https://hotel-booking-dashboard-xi.vercel.app/" target="_blank" class="link-demo" aria-label="View Hotel Booking Dashboard live on Vercel">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project-card reveal">
+            <div class="project-img-wrap">
+              <img
+                src="./assets/images/music_genre.jpg"
+                alt="Music Genre Popularity Analysis screenshot"
+                loading="lazy"
+                width="600" height="200"
+              />
+              <span class="project-badge">Visualisation</span>
+            </div>
+            <div class="project-body">
+              <h3>Music Genre Popularity Analysis</h3>
+              <p>
+                Exploratory data analysis of music streaming tracks. Examines audio features like danceability,
+                energy, and tempo to predict song popularity and analyze genre trends.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Pandas</span>
+                <span class="tech-tag">Matplotlib</span>
+                <span class="tech-tag">Seaborn</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/MirFurqaan106/Music-Genre-Popularity-Analysis" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View Music Genre Popularity Analysis on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                </a>
+                <a href="./assets/images/music_genre.jpg" target="_blank" class="link-demo" aria-label="View Music Genre Popularity Analysis demo picture">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 5 -->
+          <article class="project-card reveal">
+            <div class="project-img-wrap">
+              <img
+                src="./assets/images/netflix_analysis.jpg"
+                alt="Netflix data analysis screenshot"
+                loading="lazy"
+                width="600" height="200"
+              />
+              <span class="project-badge">Python</span>
+            </div>
+            <div class="project-body">
+              <h3>Netflix_data_analysis</h3>
+              <p>
+                A data visualization and content analysis project of Netflix shows and movies. Uncovers distribution
+                patterns across countries, release years, genres, and ratings using clean Python scripting.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Pandas</span>
+                <span class="tech-tag">Plotly</span>
+                <span class="tech-tag">NumPy</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/MirFurqaan106/Netflix-Data-Analysis" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View Netflix Data Analysis on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                </a>
+                <a href="./assets/images/netflix_analysis.jpg" target="_blank" class="link-demo" aria-label="View Netflix Data Analysis demo picture">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 6 -->
+          <article class="project-card reveal">
+            <div class="project-img-wrap">
+              <img
+                src="./assets/images/student_performance.jpg"
+                alt="Student Performance Analysis screenshot"
+                loading="lazy"
+                width="600" height="200"
+              />
+              <span class="project-badge">Machine Learning</span>
+            </div>
+            <div class="project-body">
+              <h3>Student Performance Analysis</h3>
+              <p>
+                Predictive analysis exploring factors affecting student grades, study habits, and attendance.
+                Uses machine learning models to forecast academic outcomes and identify students needing support.
+              </p>
+              <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Pandas</span>
+                <span class="tech-tag">scikit-learn</span>
+                <span class="tech-tag">Seaborn</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/MirFurqaan106/student-performance-analysis" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View Student Performance Analysis on GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i> GitHub
+                </a>
+                <a href="./assets/images/student_performance.jpg" target="_blank" class="link-demo" aria-label="View Student Performance Analysis demo picture">
+                  <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         CERTIFICATIONS
+         ============================================ -->
+    <section id="certifications" aria-labelledby="certs-title">
+      <div class="container">
+        <h2 class="section-title" id="certs-title">Certifi<span>cations</span></h2>
+
+        <div class="certs-grid">
+
+          <div class="cert-card reveal">
+            <div class="cert-icon" aria-hidden="true">🐍</div>
+            <div class="cert-info">
+              <h4>Python for Data Science</h4>
+              <p>IBM </p>
+              <a href="./images/IBM PY0101EN Certificate _ Cognitive Class.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Python for Data Science certificate">
+                View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="cert-card reveal">
+            <div class="cert-icon" aria-hidden="true">📊</div>
+            <div class="cert-info">
+              <h4>Data Analysis with Python</h4>
+              <p>Coursera</p>
+              <a href="./images/python for data analysis.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Data Analysis certificate">
+                View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="cert-card reveal">
+            <div class="cert-icon" aria-hidden="true">🗄️</div>
+            <div class="cert-info">
+              <h4>SQL Foundation by Microsoft</h4>
+              <p>Coursera</p>
+              <a href="./images/SQL Foundation by Microsoft.pdf" target="_blank" rel="noopener noreferrer" aria-label="View SQL certificate">
+                View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="cert-card reveal">
+            <div class="cert-icon" aria-hidden="true">📈</div>
+            <div class="cert-info">
+              <h4>Microsoft Power BI</h4>
+              <p>Coursera</p>
+              <a href="./images/power bi.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Power BI certificate">
+                View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="cert-card reveal">
+            <div class="cert-icon" aria-hidden="true">🤖</div>
+            <div class="cert-info">
+              <h4>Web Development</h4>
+              <p>TEACHNOOK </p>
+              <a href="./images/TEACHNOOK Internship Completion Certificate _ Mir Furkaan Hassan.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Machine Learning certificate">
+                View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="cert-card reveal">
+            <div class="cert-icon" aria-hidden="true">⚛️</div>
+            <div class="cert-info">
+              <h4>Business and Data Analytics </h4>
+              <p>Skill set Master</p>
+              <a href="./images/Business and Data Analytics.pdf" target="_blank" rel="noopener noreferrer" aria-label="View React certificate">
+                View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         RESUME
+         ============================================ -->
+    <section id="resume" aria-labelledby="resume-title">
+      <div class="container">
+        <h2 class="section-title" id="resume-title">My <span>Resume</span></h2>
+
+        <div class="resume-card reveal">
+          <span class="resume-icon" role="img" aria-label="Document">📄</span>
+          <h3>Mir Furkaan — Data Analyst</h3>
+          <p>
+            Download my latest resume to learn more about my education,
+            skills, projects, and certifications. Available in PDF format.
+          </p>
+          <div class="btn-group" style="justify-content:center">
+            <a href="./Mir_Furqaan_Hassan_Resume_.pdf" download class="btn btn-primary" aria-label="Download resume PDF">
+              <i class="fas fa-download" aria-hidden="true"></i> Download Resume
+            </a>
+            <a href="./Mir_Furqaan_Hassan_Resume_.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline" aria-label="View resume in new tab">
+              <i class="fas fa-eye" aria-hidden="true"></i> View Online
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================
+         CONTACT
+         ============================================ -->
+    <section id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <h2 class="section-title" id="contact-title">Get In <span>Touch</span></h2>
+
+        <div class="contact-wrapper">
+
+          <!-- Left: info -->
+          <div class="contact-info reveal">
+            <h3>Let's work together</h3>
+            <p>
+              Have a data project, collaboration idea, or just want to chat?
+              Fill out the form and I'll get back to you within 24 hours.
+            </p>
+
+            <div class="contact-item">
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <span>mirfurkaan106@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+              <span>Kashmir, India</span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-linkedin" aria-hidden="true"></i>
+              <span><a href="https://www.linkedin.com/in/mir-furqaan-96b527291/">linkedin.com/in/mir-furqaan</a></span>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-github" aria-hidden="true"></i>
+              <span><a href="https://github.com/Furqaan12345">github.com/Furqaan12345</a></span>
+            </div>
+          </div>
+
+          <!-- Right: form -->
+          <div class="contact-form-box reveal">
+            <!--
+              EMAILJS SETUP:
+              1. Sign up at https://www.emailjs.com
+              2. Add your Email Service  → copy the Service ID  into script.js (EMAILJS_SERVICE_ID)
+              3. Create an Email Template → copy the Template ID into script.js (EMAILJS_TEMPLATE_ID)
+              4. Go to Account > General  → copy the Public Key   into script.js (EMAILJS_PUBLIC_KEY)
+              Template variables used: {{from_name}}, {{from_email}}, {{subject}}, {{message}}
+            -->
+            <form id="contact-form" class="contact-form" novalidate aria-label="Contact form">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="from_name">Full Name</label>
+                  <input
+                    type="text"
+                    id="from_name"
+                    name="from_name"
+                    placeholder="John Doe"
+                    required
+                    autocomplete="name"
+                    aria-required="true"
+                  />
+                  <span class="err-msg" role="alert">Please enter your name.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="from_email">Email Address</label>
+                  <input
+                    type="email"
+                    id="from_email"
+                    name="from_email"
+                    placeholder="john@example.com"
+                    required
+                    autocomplete="email"
+                    aria-required="true"
+                  />
+                  <span class="err-msg" role="alert">Please enter a valid email.</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  placeholder="Data Analysis Project"
+                  required
+                  aria-required="true"
+                />
+                <span class="err-msg" role="alert">Please enter a subject.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  placeholder="Tell me about your project or idea..."
+                  required
+                  aria-required="true"
+                ></textarea>
+                <span class="err-msg" role="alert">Please enter your message.</span>
+              </div>
+
+              <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message
+              </button>
+
+              <div id="form-msg" class="form-msg" role="status" aria-live="polite"></div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo">MF<span>.</span></span>
+          <p>Data Analyst · Python · SQL · Power BI</p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="social-icons" aria-label="Social media links">
+          <a href="https://github.com/Furqaan12345" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+            <i class="fab fa-github" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/mir-furqaan-96b527291/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+          </a>
+          <a href="https://instagram.com/mirfurkaan" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile">
+            <i class="fab fa-instagram" aria-hidden="true"></i>
+          </a>
+          <a href="mailto:mirfurkaan106@gmail.com" aria-label="Send email to Mir Furkaan">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 Mir Furkaan. All rights reserved. Built with ❤️ &amp; data.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="Back to top">
+    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- Portfolio Scripts -->
+  <script src="script.js"></script>
+
+</body>
+</html>
