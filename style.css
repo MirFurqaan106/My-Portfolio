@@ -861,12 +861,12 @@ footer {
   .hero-stats { justify-content: center; }
   .about-grid { grid-template-columns: 1fr; }
   .contact-wrapper { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
 }
 
 @media (max-width: 768px) {
   section { padding: 70px 0; }
-  .nav-links { display: none; }
-  .hamburger { display: flex; }
   .img-ring, .img-ring img { width: 260px; height: 260px; }
   .projects-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
