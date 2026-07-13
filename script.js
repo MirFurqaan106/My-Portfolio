@@ -11,6 +11,11 @@ const EMAILJS_SERVICE_ID  = "service_s969psl";        // ← Your Service ID
 const EMAILJS_TEMPLATE_ID = "template_nbinywm";       // ← Your Template ID
 
 /* ============================================
+   SUPABASE CLIENT INITIALIZATION
+   ============================================ */
+const supabaseClient = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+/* ============================================
    INIT
    ============================================ */
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,6 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initSkillBars();
   initContactForm();
   initBackToTop();
+
+  // Load dynamic data from Supabase
+  loadDynamicProjects();
+  loadDynamicCertifications();
+  loadDynamicResume();
 });
 
 /* ============================================
@@ -111,6 +121,10 @@ function initTypingEffect() {
    SCROLL REVEAL
    ============================================ */
 function initScrollReveal() {
+  triggerReveal();
+}
+
+function triggerReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
@@ -121,7 +135,7 @@ function initScrollReveal() {
     });
   }, { threshold: 0.12 });
 
-  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  document.querySelectorAll(".reveal:not(.visible)").forEach(el => observer.observe(el));
 }
 
 /* ============================================
@@ -259,4 +273,107 @@ function initThemeToggle() {
     localStorage.setItem("theme", isLight ? "light" : "dark");
     icon.className = isLight ? "fas fa-sun" : "fas fa-moon";
   });
+}
+
+/* ============================================
+   SUPABASE DYNAMIC LOADERS
+   ============================================ */
+async function loadDynamicProjects() {
+  const container = document.getElementById("projects-grid");
+  if (!container || !supabaseClient) return;
+
+  const { data, error } = await supabaseClient.from("projects").select("*").order("created_at", { ascending: true });
+
+  if (error || !data || data.length === 0) {
+    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No projects found. Add them from your admin dashboard!</p>`;
+    return;
+  }
+
+  container.innerHTML = "";
+  data.forEach(p => {
+    const tagsHTML = p.tech_stack.map(tag => `<span class="tech-tag">${tag}</span>`).join("");
+    
+    // Check if demo link is a full URL or a picture
+    const isImageDemo = p.demo_url.startsWith("./") || p.demo_url.includes(".jpg") || p.demo_url.includes(".png") || p.demo_url.includes(".webp");
+    const demoIcon = isImageDemo ? "fas fa-image" : "fas fa-external-link-alt";
+    const demoLabel = isImageDemo ? "View Preview" : "Live Demo";
+
+    const article = document.createElement("article");
+    article.className = "project-card reveal";
+    article.innerHTML = `
+      <div class="project-img-wrap">
+        <img
+          src="${p.image_url}"
+          alt="${p.title} screenshot"
+          loading="lazy"
+          width="600" height="200"
+        />
+        <span class="project-badge">${p.badge}</span>
+      </div>
+      <div class="project-body">
+        <h3>${p.title}</h3>
+        <p>${p.description}</p>
+        <div class="tech-stack">${tagsHTML}</div>
+        <div class="project-links">
+          <a href="${p.github_url}" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View ${p.title} on GitHub">
+            <i class="fab fa-github" aria-hidden="true"></i> GitHub
+          </a>
+          <a href="${p.demo_url}" target="_blank" class="link-demo" aria-label="View ${p.title} demo">
+            <i class="${demoIcon}" aria-hidden="true"></i> ${demoLabel}
+          </a>
+        </div>
+      </div>
+    `;
+    container.appendChild(article);
+  });
+  triggerReveal();
+}
+
+async function loadDynamicCertifications() {
+  const container = document.getElementById("certs-grid");
+  if (!container || !supabaseClient) return;
+
+  const { data, error } = await supabaseClient.from("certifications").select("*").order("created_at", { ascending: true });
+
+  if (error || !data || data.length === 0) {
+    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No certifications found. Add them from your admin dashboard!</p>`;
+    return;
+  }
+
+  container.innerHTML = "";
+  data.forEach(c => {
+    const card = document.createElement("div");
+    card.className = "cert-card reveal";
+    card.innerHTML = `
+      <div class="cert-icon" aria-hidden="true">${c.icon}</div>
+      <div class="cert-info">
+        <h4>${c.title}</h4>
+        <p>${c.issuer}</p>
+        <a href="${c.pdf_url}" target="_blank" rel="noopener noreferrer" aria-label="View ${c.title} certificate">
+          View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  triggerReveal();
+}
+
+async function loadDynamicResume() {
+  if (!supabaseClient) return;
+
+  const { data } = supabaseClient.storage.from("resumes").getPublicUrl("Mir_Furqaan_Hassan_Resume_.pdf");
+  
+  if (data && data.publicUrl) {
+    try {
+      const response = await fetch(data.publicUrl, { method: 'HEAD' });
+      if (response.ok) {
+        document.querySelectorAll(".resume-link").forEach(link => {
+          link.href = data.publicUrl;
+        });
+      }
+    } catch (e) {
+      console.warn("Storage CV not found or inaccessible, keeping local link.", e);
+    }
+  }
 }
