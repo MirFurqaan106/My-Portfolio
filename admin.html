@@ -506,14 +506,14 @@
   
   <script>
     // Initialize Supabase client
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let projectsCache = [];
     let certsCache = [];
 
     // Session validation
     document.addEventListener("DOMContentLoaded", async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await supabaseClient.auth.getSession();
       toggleScreens(session);
 
       // Add tabs listeners
@@ -563,7 +563,7 @@
       const email = document.getElementById("login-email").value.trim();
       const password = document.getElementById("login-password").value;
       
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       
       if (error) {
         showAlert("auth-alert", `❌ ${error.message}`, "error");
@@ -574,7 +574,7 @@
 
     // LOGOUT ACTION
     document.getElementById("logout-btn").addEventListener("click", async () => {
-      await supabase.auth.signOut();
+      await supabaseClient.auth.signOut();
       toggleScreens(null);
     });
 
@@ -596,7 +596,7 @@
     }
 
     async function loadProjects() {
-      const { data, error } = await supabase.from("projects").select("*").order("created_at", { ascending: true });
+      const { data, error } = await supabaseClient.from("projects").select("*").order("created_at", { ascending: true });
       if (error) {
         showAlert("db-alert", "Failed to fetch projects: " + error.message, "error");
         return;
@@ -606,7 +606,7 @@
     }
 
     async function loadCertifications() {
-      const { data, error } = await supabase.from("certifications").select("*").order("created_at", { ascending: true });
+      const { data, error } = await supabaseClient.from("certifications").select("*").order("created_at", { ascending: true });
       if (error) {
         showAlert("db-alert", "Failed to fetch certifications: " + error.message, "error");
         return;
@@ -704,9 +704,9 @@
       
       let res;
       if (id) {
-        res = await supabase.from("projects").update(item).eq("id", id);
+        res = await supabaseClient.from("projects").update(item).eq("id", id);
       } else {
-        res = await supabase.from("projects").insert([item]);
+        res = await supabaseClient.from("projects").insert([item]);
       }
 
       if (res.error) {
@@ -720,7 +720,7 @@
 
     async function deleteProject(id) {
       if (!confirm("Are you sure you want to delete this project?")) return;
-      const { error } = await supabase.from("projects").delete().eq("id", id);
+      const { error } = await supabaseClient.from("projects").delete().eq("id", id);
       if (error) {
         showAlert("db-alert", "Error deleting project: " + error.message, "error");
       } else {
@@ -769,9 +769,9 @@
       
       let res;
       if (id) {
-        res = await supabase.from("certifications").update(item).eq("id", id);
+        res = await supabaseClient.from("certifications").update(item).eq("id", id);
       } else {
-        res = await supabase.from("certifications").insert([item]);
+        res = await supabaseClient.from("certifications").insert([item]);
       }
 
       if (res.error) {
@@ -785,7 +785,7 @@
 
     async function deleteCert(id) {
       if (!confirm("Are you sure you want to delete this certification?")) return;
-      const { error } = await supabase.from("certifications").delete().eq("id", id);
+      const { error } = await supabaseClient.from("certifications").delete().eq("id", id);
       if (error) {
         showAlert("db-alert", "Error deleting certification: " + error.message, "error");
       } else {
@@ -809,7 +809,7 @@
       const fileName = "Mir_Furqaan_Hassan_Resume_.pdf";
       
       // We use upsert: true so it overwrites any existing file
-      const { data, error } = await supabase.storage
+      const { data, error } = await supabaseClient.storage
         .from("resumes")
         .upload(fileName, file, {
           cacheControl: "0",
