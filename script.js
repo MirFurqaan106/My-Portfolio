@@ -88,9 +88,10 @@ function initTypingEffect() {
 
   const phrases = [
     "Data Analyst",
+    "Gen AI Developer",
     "Python Developer",
-    "Power BI Expert",
     "SQL Specialist",
+    "Power BI Expert",
     "Data Storyteller"
   ];
 
