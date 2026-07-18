@@ -16,6 +16,12 @@ const EMAILJS_TEMPLATE_ID = "template_nbinywm";       // ← Your Template ID
 const supabaseClient = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 /* ============================================
+   CAREER TRACK & PORTAL STATE
+   ============================================ */
+let activeTrack = localStorage.getItem("careerTrack") || null;
+let typingTimeoutId = null;
+
+/* ============================================
    INIT
    ============================================ */
 document.addEventListener("DOMContentLoaded", () => {
@@ -24,16 +30,23 @@ document.addEventListener("DOMContentLoaded", () => {
   initNavbar();
   initThemeToggle();
   initMobileMenu();
-  initTypingEffect();
   initScrollReveal();
   initSkillBars();
   initContactForm();
   initBackToTop();
+  initGatewayPortal();
 
-  // Load dynamic data from Supabase
-  loadDynamicProjects();
-  loadDynamicCertifications();
-  loadDynamicResume();
+  // If track is already saved, load it immediately without showing portal
+  if (activeTrack) {
+    const portal = document.getElementById("gateway-portal");
+    const content = document.getElementById("portfolio-content");
+    if (portal) portal.style.display = "none";
+    if (content) {
+      content.style.display = "block";
+      content.style.opacity = "1";
+    }
+    setPortfolioTrack(activeTrack);
+  }
 });
 
 /* ============================================
@@ -80,15 +93,122 @@ function initMobileMenu() {
 }
 
 /* ============================================
+   CAREER TRACK GATEWAY & PORTAL CONTROL
+   ============================================ */
+function initGatewayPortal() {
+  const btnData = document.getElementById("btn-track-data");
+  const btnSoftware = document.getElementById("btn-track-software");
+  const toggleBtn = document.getElementById("track-toggle");
+
+  if (btnData) {
+    btnData.addEventListener("click", () => selectTrack("data"));
+    btnData.addEventListener("keypress", (e) => { if (e.key === "Enter") selectTrack("data"); });
+  }
+  if (btnSoftware) {
+    btnSoftware.addEventListener("click", () => selectTrack("software"));
+    btnSoftware.addEventListener("keypress", (e) => { if (e.key === "Enter") selectTrack("software"); });
+  }
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const nextTrack = (activeTrack === "data") ? "software" : "data";
+      setPortfolioTrack(nextTrack);
+    });
+  }
+}
+
+function selectTrack(track) {
+  const portal = document.getElementById("gateway-portal");
+  const content = document.getElementById("portfolio-content");
+  
+  if (portal) portal.classList.add("gateway-hidden");
+  if (content) {
+    content.style.display = "block";
+    setTimeout(() => {
+      content.style.opacity = "1";
+    }, 50);
+  }
+  
+  setTimeout(() => {
+    if (portal) portal.style.display = "none";
+  }, 600);
+
+  setPortfolioTrack(track);
+}
+
+function setPortfolioTrack(track) {
+  activeTrack = track;
+  localStorage.setItem("careerTrack", track);
+
+  // 1. Update switcher button text
+  const switcherText = document.getElementById("track-toggle-text");
+  if (switcherText) {
+    switcherText.innerHTML = (track === "data") 
+      ? '<i class="fas fa-chart-bar" aria-hidden="true"></i> Data Mode' 
+      : '<i class="fas fa-brain" aria-hidden="true"></i> Dev Mode';
+  }
+
+  // 2. Set skills filter class
+  const skillsSec = document.getElementById("skills");
+  if (skillsSec) {
+    skillsSec.className = (track === "data") ? "filter-data" : "filter-software";
+  }
+
+  // 3. Update Text Content copy
+  const heroBio = document.querySelector(".hero-text p");
+  const aboutWhoAmI = document.querySelector(".about-left .glass-card:nth-child(1) p");
+  const aboutObjective = document.querySelector(".about-left .glass-card:nth-child(2) p");
+
+  if (track === "data") {
+    if (heroBio) {
+      heroBio.textContent = "MCA graduate from Lovely Professional University with a strong passion for Data Analytics, Business Intelligence, and Machine Learning. Skilled in Python, SQL, Power BI, and data visualization, with hands-on experience in transforming complex datasets into actionable business insights.";
+    }
+    if (aboutWhoAmI) {
+      aboutWhoAmI.textContent = "I'm Mir Furqaan from Kashmir, a Master of Computer Applications (MCA) graduate from Lovely Professional University. I specialize in Data Analytics, Business Intelligence, Data Visualization, and Machine Learning. I enjoy transforming raw data into meaningful insights that help organizations make informed decisions and improve business performance.";
+    }
+    if (aboutObjective) {
+      aboutObjective.textContent = "Seeking a challenging opportunity as a Data Analyst where I can apply my analytical, technical, and problem-solving skills to extract valuable insights from data, contribute to business growth, and continuously enhance my expertise in data-driven decision making.";
+    }
+  } else {
+    if (heroBio) {
+      heroBio.textContent = "MCA graduate from Lovely Professional University with a strong passion for Generative AI development, Software Engineering, and Machine Learning. Skilled in Python, React, SQL, LLMs, and building intelligent full-stack applications that automate processes.";
+    }
+    if (aboutWhoAmI) {
+      aboutWhoAmI.textContent = "I'm Mir Furqaan from Kashmir, a Master of Computer Applications (MCA) graduate from Lovely Professional University. I specialize in Generative AI development, Software Engineering, and Machine Learning. I enjoy building intelligent LLM-powered applications, system architectures, and full-stack solutions.";
+    }
+    if (aboutObjective) {
+      aboutObjective.textContent = "Seeking a challenging opportunity as a Gen AI Developer & Software Engineer where I can apply my cognitive engineering, full-stack development, and machine learning skills to build state-of-the-art AI systems and scale software solutions.";
+    }
+  }
+
+  // Restart typing effect with new phrases
+  initTypingEffect();
+
+  // 4. Load filtered items from database
+  loadDynamicProjects();
+  loadDynamicCertifications();
+  loadDynamicResume();
+}
+
+/* ============================================
    TYPING EFFECT
    ============================================ */
 function initTypingEffect() {
   const el = document.getElementById("typing-text");
   if (!el) return;
 
-  const phrases = [
-    "Data Analyst",
+  if (typingTimeoutId) {
+    clearTimeout(typingTimeoutId);
+    typingTimeoutId = null;
+  }
+
+  const phrases = (activeTrack === "software") ? [
     "Gen AI Developer",
+    "Python Developer",
+    "SQL Specialist",
+    "React Developer",
+    "Full-Stack Engineer"
+  ] : [
+    "Data Analyst",
     "Python Developer",
     "SQL Specialist",
     "Power BI Expert",
@@ -112,7 +232,7 @@ function initTypingEffect() {
       delay = 400;
     }
 
-    setTimeout(tick, delay);
+    typingTimeoutId = setTimeout(tick, delay);
   }
 
   tick();
@@ -280,6 +400,7 @@ function initThemeToggle() {
    SUPABASE DYNAMIC LOADERS
    ============================================ */
 async function loadDynamicProjects() {
+  if (!activeTrack) return;
   const container = document.getElementById("projects-grid");
   if (!container || !supabaseClient) return;
 
@@ -290,8 +411,16 @@ async function loadDynamicProjects() {
     return;
   }
 
+  // Filter in-memory by track
+  const filteredData = data.filter(p => !p.category_track || p.category_track === 'both' || p.category_track === activeTrack);
+
+  if (filteredData.length === 0) {
+    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No projects found for the selected career track.</p>`;
+    return;
+  }
+
   container.innerHTML = "";
-  data.forEach(p => {
+  filteredData.forEach(p => {
     const tagsHTML = p.tech_stack.map(tag => `<span class="tech-tag">${tag}</span>`).join("");
     
     // Check if demo link is a full URL or a picture
@@ -331,6 +460,7 @@ async function loadDynamicProjects() {
 }
 
 async function loadDynamicCertifications() {
+  if (!activeTrack) return;
   const container = document.getElementById("certs-grid");
   if (!container || !supabaseClient) return;
 
@@ -341,8 +471,16 @@ async function loadDynamicCertifications() {
     return;
   }
 
+  // Filter in-memory by track
+  const filteredData = data.filter(c => !c.category_track || c.category_track === 'both' || c.category_track === activeTrack);
+
+  if (filteredData.length === 0) {
+    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No certifications found for the selected career track.</p>`;
+    return;
+  }
+
   container.innerHTML = "";
-  data.forEach(c => {
+  filteredData.forEach(c => {
     const card = document.createElement("div");
     card.className = "cert-card reveal";
     card.innerHTML = `
@@ -361,6 +499,7 @@ async function loadDynamicCertifications() {
 }
 
 async function loadDynamicResume() {
+  if (!activeTrack) return;
   if (!supabaseClient) return;
 
   const { data } = supabaseClient.storage.from("resumes").getPublicUrl("Mir_Furqaan_Hassan_Resume_.pdf");

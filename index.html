@@ -22,17 +22,46 @@
 </head>
 <body>
 
-  <!-- ============================================
-       NAVBAR
-       ============================================ -->
-  <nav role="navigation" aria-label="Main navigation">
-    <div class="container nav-container">
-      <a href="#home" class="logo" aria-label="Mir Furqaan home">MIR FURQAAN<span></span></a>
+  <!-- Gateway Portal Screen -->
+  <div id="gateway-portal" class="gateway-active">
+    <div class="gateway-container">
+      <div class="gateway-header">
+        <h1>MIR FURQAAN</h1>
+        <p>Choose a Career Track to Explore My Portfolio</p>
+      </div>
+      <div class="gateway-grid">
+        <div class="gateway-card" id="btn-track-data" role="button" tabindex="0">
+          <div class="gateway-card-icon">📊</div>
+          <h3>Data Analytics</h3>
+          <p>Python · SQL · Power BI · Business Intelligence · Machine Learning</p>
+          <span class="enter-btn">Enter Track <i class="fas fa-arrow-right"></i></span>
+        </div>
+        <div class="gateway-card" id="btn-track-software" role="button" tabindex="0">
+          <div class="gateway-card-icon">🧠</div>
+          <h3>Software & Gen AI</h3>
+          <p>React · Generative AI · Large Language Models · Supabase · Full-Stack</p>
+          <span class="enter-btn">Enter Track <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <div class="nav-menu-group">
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-          <i class="fas fa-moon" aria-hidden="true"></i>
-        </button>
+  <div id="portfolio-content" style="opacity: 0; display: none; transition: opacity 0.6s ease-in-out;">
+
+    <!-- ============================================
+         NAVBAR
+         ============================================ -->
+    <nav role="navigation" aria-label="Main navigation">
+      <div class="container nav-container">
+        <a href="#home" class="logo" aria-label="Mir Furqaan home">MIR FURQAAN<span></span></a>
+
+        <div class="nav-menu-group">
+          <button class="track-toggle" id="track-toggle" aria-label="Toggle portfolio track">
+            <span id="track-toggle-text">📊 Data Mode</span>
+          </button>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </button>
 
         <div class="nav-links" role="menubar">
           <a href="#home"           role="menuitem">Home</a>
@@ -231,7 +260,7 @@
 
         <div class="skills-grid">
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-both">
             <span class="skill-icon" role="img" aria-label="Python">🐍</span>
             <h4>Python</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -239,7 +268,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-both">
             <span class="skill-icon" role="img" aria-label="SQL">🗄️</span>
             <h4>SQL</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -247,7 +276,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-data">
             <span class="skill-icon" role="img" aria-label="Power BI">📊</span>
             <h4>Power BI</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -255,7 +284,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-data">
             <span class="skill-icon" role="img" aria-label="Excel">📗</span>
             <h4>Excel</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -263,7 +292,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-data">
             <span class="skill-icon" role="img" aria-label="Pandas">🐼</span>
             <h4>Pandas</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -271,7 +300,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-data">
             <span class="skill-icon" role="img" aria-label="NumPy">🔢</span>
             <h4>NumPy</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -279,7 +308,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-both">
             <span class="skill-icon" role="img" aria-label="Machine Learning">🤖</span>
             <h4>Machine Learning</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -287,7 +316,15 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-software">
+            <span class="skill-icon" role="img" aria-label="Generative AI">🧠</span>
+            <h4>LLMs & Gen AI</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="80%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal track-software">
             <span class="skill-icon" role="img" aria-label="React">⚛️</span>
             <h4>React</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -295,7 +332,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-software">
             <span class="skill-icon" role="img" aria-label="HTML">🌐</span>
             <h4>HTML</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -303,7 +340,7 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-software">
             <span class="skill-icon" role="img" aria-label="CSS">🎨</span>
             <h4>CSS</h4>
             <div class="skill-bar-bg" aria-hidden="true">
@@ -311,11 +348,19 @@
             </div>
           </div>
 
-          <div class="skill-card reveal">
+          <div class="skill-card reveal track-software">
             <span class="skill-icon" role="img" aria-label="JavaScript">⚡</span>
             <h4>JavaScript</h4>
             <div class="skill-bar-bg" aria-hidden="true">
               <div class="skill-bar" data-level="78%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal track-both">
+            <span class="skill-icon" role="img" aria-label="Git">🛠️</span>
+            <h4>Git & GitHub</h4>
+            <div class="skill-bar-bg" aria-hidden="true">
+              <div class="skill-bar" data-level="85%"></div>
             </div>
           </div>
 
@@ -539,6 +584,8 @@
       </div>
     </div>
   </footer>
+
+  </div>
 
   <!-- Back to Top -->
   <button class="back-to-top" aria-label="Back to top">

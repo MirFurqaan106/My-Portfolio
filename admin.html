@@ -443,6 +443,14 @@
             <label for="project-tags">Tech Stack (comma-separated)</label>
             <input type="text" id="project-tags" required placeholder="e.g. Python, SQL, Power BI" />
           </div>
+          <div class="form-group">
+            <label for="project-track">Career Track</label>
+            <select id="project-track" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; color: white; padding: 10px; font-family: inherit; font-size: 14px; width: 100%;">
+              <option value="data">Data Analytics</option>
+              <option value="software">Software & Gen AI</option>
+              <option value="both">Both</option>
+            </select>
+          </div>
           <div class="form-group full-row">
             <label for="project-image">Image URL / Path</label>
             <input type="text" id="project-image" required placeholder="e.g. ./assets/images/ecommerce_sales.jpg" />
@@ -477,6 +485,14 @@
         <div class="form-group">
           <label for="cert-issuer">Issuer</label>
           <input type="text" id="cert-issuer" required placeholder="e.g. IBM, Coursera" />
+        </div>
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label for="cert-track">Career Track</label>
+          <select id="cert-track" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; color: white; padding: 10px; font-family: inherit; font-size: 14px; width: 100%;">
+            <option value="data">Data Analytics</option>
+            <option value="software">Software & Gen AI</option>
+            <option value="both">Both</option>
+          </select>
         </div>
         <div class="form-grid">
           <div class="form-group">
@@ -677,6 +693,7 @@
           document.getElementById("project-image").value = p.image_url;
           document.getElementById("project-github").value = p.github_url;
           document.getElementById("project-demo").value = p.demo_url;
+          document.getElementById("project-track").value = p.category_track || "both";
         }
       } else {
         title.textContent = "Add Project";
@@ -699,8 +716,9 @@
       const image_url = document.getElementById("project-image").value.trim();
       const github_url = document.getElementById("project-github").value.trim();
       const demo_url = document.getElementById("project-demo").value.trim();
+      const category_track = document.getElementById("project-track").value;
 
-      const item = { title, description, badge, tech_stack, image_url, github_url, demo_url };
+      const item = { title, description, badge, tech_stack, image_url, github_url, demo_url, category_track };
       
       let res;
       if (id) {
@@ -745,6 +763,7 @@
           document.getElementById("cert-issuer").value = c.issuer;
           document.getElementById("cert-icon").value = c.icon;
           document.getElementById("cert-pdf").value = c.pdf_url;
+          document.getElementById("cert-track").value = c.category_track || "both";
         }
       } else {
         title.textContent = "Add Certification";
@@ -764,8 +783,9 @@
       const issuer = document.getElementById("cert-issuer").value.trim();
       const icon = document.getElementById("cert-icon").value;
       const pdf_url = document.getElementById("cert-pdf").value.trim();
+      const category_track = document.getElementById("cert-track").value;
 
-      const item = { title, issuer, icon, pdf_url };
+      const item = { title, issuer, icon, pdf_url, category_track };
       
       let res;
       if (id) {
