@@ -729,6 +729,7 @@
 
       if (res.error) {
         showAlert("db-alert", "Error saving project: " + res.error.message, "error");
+        alert("❌ Error saving project:\n" + res.error.message);
       } else {
         showAlert("db-alert", "Project saved successfully!", "success");
         closeProjectModal();
@@ -796,6 +797,7 @@
 
       if (res.error) {
         showAlert("db-alert", "Error saving certification: " + res.error.message, "error");
+        alert("❌ Error saving certification:\n" + res.error.message);
       } else {
         showAlert("db-alert", "Certification saved successfully!", "success");
         closeCertModal();
