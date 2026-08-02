@@ -516,6 +516,24 @@
     </div>
   </div>
 
+  <!-- 5. SMART DELETE OPTIONS MODAL -->
+  <div class="modal" id="delete-modal">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="delete-modal-title" style="color: #ef4444;"><i class="fas fa-trash-alt"></i> Delete / Remove Options</h3>
+        <button class="close-modal" onclick="closeDeleteModal()">&times;</button>
+      </div>
+      <div style="margin: 15px 0 20px 0; background: rgba(2, 6, 23, 0.5); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
+        <h4 id="delete-item-title" style="font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px;">Item Title</h4>
+        <p id="delete-item-subtitle" style="font-size: 13px; color: var(--text-muted); margin: 0;">Current Status: <span id="delete-item-track-badge" style="color: var(--primary); font-weight: 600;">Both Portfolios</span></p>
+      </div>
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Select which portfolio you want to remove this item from:</p>
+      <div style="display: flex; flex-direction: column; gap: 10px;" id="delete-options-container">
+        <!-- Dynamic Option Buttons injected by JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- Supabase Config & JS SDK -->
   <script src="supabase-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -637,16 +655,24 @@
       container.innerHTML = "";
       
       projectsCache.forEach(p => {
+        const track = p.category_track || 'both';
+        const trackLabel = (track === 'data') ? '📊 Data Analytics'
+          : (track === 'software') ? '🧠 Software & Gen AI'
+          : '🌐 Both Portfolios';
+
         const div = document.createElement("div");
         div.className = "item-card";
         div.innerHTML = `
           <div>
-            <h4>${p.title}</h4>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px;">
+              <h4 style="margin: 0;">${p.title}</h4>
+              <span style="font-size: 11px; padding: 3px 8px; border-radius: 12px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); color: var(--primary); font-weight: 600; white-space: nowrap;">${trackLabel}</span>
+            </div>
             <p>${p.description}</p>
           </div>
           <div class="item-actions">
             <button class="edit-btn" onclick="openProjectModal(${p.id})">Edit</button>
-            <button class="delete-btn" onclick="deleteProject(${p.id})">Delete</button>
+            <button class="delete-btn" onclick="openDeleteModal(${p.id}, 'projects')">Delete / Remove</button>
           </div>
         `;
         container.appendChild(div);
@@ -658,16 +684,24 @@
       container.innerHTML = "";
       
       certsCache.forEach(c => {
+        const track = c.category_track || 'both';
+        const trackLabel = (track === 'data') ? '📊 Data Analytics'
+          : (track === 'software') ? '🧠 Software & Gen AI'
+          : '🌐 Both Portfolios';
+
         const div = document.createElement("div");
         div.className = "item-card";
         div.innerHTML = `
           <div>
-            <h4>${c.icon} ${c.title}</h4>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px;">
+              <h4 style="margin: 0;">${c.icon} ${c.title}</h4>
+              <span style="font-size: 11px; padding: 3px 8px; border-radius: 12px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.25); color: var(--primary); font-weight: 600; white-space: nowrap;">${trackLabel}</span>
+            </div>
             <p>Issuer: ${c.issuer}</p>
           </div>
           <div class="item-actions">
             <button class="edit-btn" onclick="openCertModal(${c.id})">Edit</button>
-            <button class="delete-btn" onclick="deleteCert(${c.id})">Delete</button>
+            <button class="delete-btn" onclick="openDeleteModal(${c.id}, 'certs')">Delete / Remove</button>
           </div>
         `;
         container.appendChild(div);
@@ -738,81 +772,117 @@
     });
 
     async function deleteProject(id) {
-      if (!confirm("Are you sure you want to delete this project?")) return;
-      const { error } = await supabaseClient.from("projects").delete().eq("id", id);
-      if (error) {
-        showAlert("db-alert", "Error deleting project: " + error.message, "error");
-      } else {
-        showAlert("db-alert", "Project deleted successfully!", "success");
-        loadProjects();
-      }
+      openDeleteModal(id, 'projects');
     }
-
-    // CERTIFICATIONS FORMS & MODALS
-    function openCertModal(id = null) {
-      const title = document.getElementById("cert-modal-title");
-      const form = document.getElementById("cert-form");
-      form.reset();
-      document.getElementById("cert-id").value = "";
-
-      if (id !== null) {
-        title.textContent = "Edit Certification";
-        const c = certsCache.find(x => x.id === id);
-        if (c) {
-          document.getElementById("cert-id").value = c.id;
-          document.getElementById("cert-title").value = c.title;
-          document.getElementById("cert-issuer").value = c.issuer;
-          document.getElementById("cert-icon").value = c.icon;
-          document.getElementById("cert-pdf").value = c.pdf_url;
-          document.getElementById("cert-track").value = c.category_track || "both";
-        }
-      } else {
-        title.textContent = "Add Certification";
-      }
-      
-      document.getElementById("cert-modal").classList.add("active");
-    }
-
-    function closeCertModal() {
-      document.getElementById("cert-modal").classList.remove("active");
-    }
-
-    document.getElementById("cert-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const id = document.getElementById("cert-id").value;
-      const title = document.getElementById("cert-title").value.trim();
-      const issuer = document.getElementById("cert-issuer").value.trim();
-      const icon = document.getElementById("cert-icon").value;
-      const pdf_url = document.getElementById("cert-pdf").value.trim();
-      const category_track = document.getElementById("cert-track").value;
-
-      const item = { title, issuer, icon, pdf_url, category_track };
-      
-      let res;
-      if (id) {
-        res = await supabaseClient.from("certifications").update(item).eq("id", id);
-      } else {
-        res = await supabaseClient.from("certifications").insert([item]);
-      }
-
-      if (res.error) {
-        showAlert("db-alert", "Error saving certification: " + res.error.message, "error");
-        alert("❌ Error saving certification:\n" + res.error.message);
-      } else {
-        showAlert("db-alert", "Certification saved successfully!", "success");
-        closeCertModal();
-        loadCertifications();
-      }
-    });
 
     async function deleteCert(id) {
-      if (!confirm("Are you sure you want to delete this certification?")) return;
-      const { error } = await supabaseClient.from("certifications").delete().eq("id", id);
-      if (error) {
-        showAlert("db-alert", "Error deleting certification: " + error.message, "error");
+      openDeleteModal(id, 'certs');
+    }
+
+    // SMART DELETE CONTROLLERS
+    let deleteTarget = { id: null, type: null, item: null };
+
+    function openDeleteModal(id, type) {
+      deleteTarget = { id, type };
+      const item = (type === 'projects') 
+        ? projectsCache.find(x => x.id === id)
+        : certsCache.find(x => x.id === id);
+
+      if (!item) return;
+      deleteTarget.item = item;
+
+      document.getElementById("delete-item-title").textContent = item.title;
+      
+      const track = item.category_track || 'both';
+      const trackBadge = document.getElementById("delete-item-track-badge");
+      
+      if (track === 'data') {
+        trackBadge.textContent = '📊 Data Analytics Portfolio Only';
+      } else if (track === 'software') {
+        trackBadge.textContent = '🧠 Software & Gen AI Portfolio Only';
       } else {
-        showAlert("db-alert", "Certification deleted successfully!", "success");
-        loadCertifications();
+        trackBadge.textContent = '🌐 Both Portfolios';
+      }
+
+      const optionsContainer = document.getElementById("delete-options-container");
+      optionsContainer.innerHTML = "";
+
+      // Option A: Remove from Data Analytics
+      if (track === 'data' || track === 'both') {
+        const btnData = document.createElement("button");
+        btnData.className = "btn";
+        btnData.style.cssText = "background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 12px 16px; border-radius: 10px; cursor: pointer; text-align: left; transition: 0.2s;";
+        btnData.innerHTML = `
+          <div style="font-weight: 700; font-size: 14px;">📊 Remove from Data Analytics Portfolio</div>
+          <div style="font-size: 12px; opacity: 0.8; margin-top: 2px;">${track === 'both' ? 'Keeps project in Software & Gen AI portfolio' : 'Deletes this project completely'}</div>
+        `;
+        btnData.onclick = () => executeSmartDelete('remove_data');
+        optionsContainer.appendChild(btnData);
+      }
+
+      // Option B: Remove from Software & Gen AI
+      if (track === 'software' || track === 'both') {
+        const btnSoft = document.createElement("button");
+        btnSoft.className = "btn";
+        btnSoft.style.cssText = "background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; padding: 12px 16px; border-radius: 10px; cursor: pointer; text-align: left; transition: 0.2s;";
+        btnSoft.innerHTML = `
+          <div style="font-weight: 700; font-size: 14px;">🧠 Remove from Software & Gen AI Portfolio</div>
+          <div style="font-size: 12px; opacity: 0.8; margin-top: 2px;">${track === 'both' ? 'Keeps project in Data Analytics portfolio' : 'Deletes this project completely'}</div>
+        `;
+        btnSoft.onclick = () => executeSmartDelete('remove_software');
+        optionsContainer.appendChild(btnSoft);
+      }
+
+      // Option C: Delete Permanently from Database
+      const btnPerm = document.createElement("button");
+      btnPerm.className = "btn";
+      btnPerm.style.cssText = "background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 16px; border-radius: 10px; cursor: pointer; text-align: left; transition: 0.2s;";
+      btnPerm.innerHTML = `
+        <div style="font-weight: 700; font-size: 14px;">🗑️ Delete Permanently from Database</div>
+        <div style="font-size: 12px; opacity: 0.8; margin-top: 2px;">Completely removes item from all portfolios</div>
+      `;
+      btnPerm.onclick = () => executeSmartDelete('delete_permanent');
+      optionsContainer.appendChild(btnPerm);
+
+      document.getElementById("delete-modal").classList.add("active");
+    }
+
+    function closeDeleteModal() {
+      document.getElementById("delete-modal").classList.remove("active");
+    }
+
+    async function executeSmartDelete(action) {
+      const { id, type, item } = deleteTarget;
+      if (!id || !item) return;
+
+      const table = (type === 'projects') ? "projects" : "certifications";
+      const currentTrack = item.category_track || 'both';
+      let res;
+
+      if (action === 'remove_data') {
+        if (currentTrack === 'both') {
+          res = await supabaseClient.from(table).update({ category_track: 'software' }).eq("id", id);
+        } else {
+          res = await supabaseClient.from(table).delete().eq("id", id);
+        }
+      } else if (action === 'remove_software') {
+        if (currentTrack === 'both') {
+          res = await supabaseClient.from(table).update({ category_track: 'data' }).eq("id", id);
+        } else {
+          res = await supabaseClient.from(table).delete().eq("id", id);
+        }
+      } else if (action === 'delete_permanent') {
+        res = await supabaseClient.from(table).delete().eq("id", id);
+      }
+
+      if (res && res.error) {
+        showAlert("db-alert", "Error: " + res.error.message, "error");
+        alert("❌ Error: " + res.error.message);
+      } else {
+        showAlert("db-alert", "Updated successfully!", "success");
+        closeDeleteModal();
+        if (type === 'projects') loadProjects();
+        else loadCertifications();
       }
     }
 
