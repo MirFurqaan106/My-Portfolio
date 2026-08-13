@@ -13,7 +13,13 @@ const EMAILJS_TEMPLATE_ID = "template_nbinywm";       // ← Your Template ID
 /* ============================================
    SUPABASE CLIENT INITIALIZATION
    ============================================ */
-const supabaseClient = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const supabaseClient = (typeof supabase !== 'undefined') ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+    detectSessionInUrl: false
+  }
+}) : null;
 
 /* ============================================
    CAREER TRACK & PORTAL STATE
@@ -502,7 +508,7 @@ async function loadDynamicProjects() {
         data = res.data;
       }
     } catch (e) {
-      console.warn("Supabase projects fetch failed, using fallback data.", e);
+      // Use fallback if unreachable
     }
   }
 
@@ -570,7 +576,7 @@ async function loadDynamicCertifications() {
         data = res.data;
       }
     } catch (e) {
-      console.warn("Supabase certifications fetch failed, using fallback data.", e);
+      // Use fallback if unreachable
     }
   }
 
@@ -606,14 +612,14 @@ async function loadDynamicResume() {
   try {
     const { data } = supabaseClient.storage.from("resumes").getPublicUrl("Mir_Furqaan_Hassan_Resume_.pdf");
     if (data && data.publicUrl) {
-      const response = await fetch(data.publicUrl, { method: 'HEAD' });
-      if (response.ok) {
+      const response = await fetch(data.publicUrl, { method: 'HEAD' }).catch(() => null);
+      if (response && response.ok) {
         document.querySelectorAll(".resume-link").forEach(link => {
           link.href = data.publicUrl;
         });
       }
     }
   } catch (e) {
-    console.warn("Storage CV lookup skipped or paused.", e);
+    // Silent catch if storage is paused
   }
 }
