@@ -683,6 +683,22 @@ function initAIChatbot() {
     handleUserQuery(q);
   });
 
+  messagesContainer.addEventListener("click", (e) => {
+    const trigger = e.target.closest(".chat-contact-trigger");
+    if (trigger) {
+      chatWindow.classList.add("chat-hidden");
+      const contactSec = document.getElementById("contact");
+      if (contactSec) {
+        contactSec.scrollIntoView({ behavior: "smooth" });
+        const subj = document.getElementById("subject");
+        if (subj) {
+          subj.value = "Inquiry via AI Chatbot";
+          subj.focus();
+        }
+      }
+    }
+  });
+
   function handleUserQuery(queryText) {
     appendMessage(escapeHTML(queryText), "user");
     showTypingIndicator();
@@ -757,12 +773,15 @@ Scroll to the <strong>Projects</strong> section to view live previews & code!`;
 • <strong>Focus:</strong> Data Analytics, Business Intelligence & Generative AI Development`;
     }
 
-    if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("linkedin") || text.includes("github") || text.includes("phone")) {
-      return `📬 <strong>How to Reach Mir Furqaan:</strong><br><br>
-• ✉️ <strong>Email:</strong> mirfurkaan106@gmail.com<br>
-• 💼 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/mir-furqaan-96b527291/" target="_blank" style="color:var(--primary);">linkedin.com/in/mir-furqaan</a><br>
-• 🐙 <strong>GitHub:</strong> <a href="https://github.com/MirFurqaan106" target="_blank" style="color:var(--primary);">github.com/MirFurqaan106</a><br><br>
-You can also use the <strong>Contact Form</strong> below to send him a direct email!`;
+    if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("connect") || text.includes("hire") || text.includes("message") || text.includes("talk") || text.includes("chat")) {
+      return `📬 <strong>Connect with Mir Furqaan:</strong><br><br>
+You can get in touch with him directly using any of these options:<br><br>
+• ✉️ <strong>Direct Email:</strong> <a href="mailto:mirfurkaan106@gmail.com" style="color:var(--primary); font-weight:600;">mirfurkaan106@gmail.com</a><br>
+• 💼 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/mir-furqaan-96b527291/" target="_blank" style="color:var(--primary); font-weight:600;">linkedin.com/in/mir-furqaan</a><br>
+• 🐙 <strong>GitHub:</strong> <a href="https://github.com/MirFurqaan106" target="_blank" style="color:var(--primary); font-weight:600;">github.com/MirFurqaan106</a><br><br>
+<button class="chat-contact-trigger" style="background:var(--primary); color:#020617; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; width:100%; margin-top:4px;">
+  📝 Open Email Message Form
+</button>`;
     }
 
     if (text.includes("resume") || text.includes("cv") || text.includes("download")) {
