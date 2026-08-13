@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactForm();
   initBackToTop();
   initGatewayPortal();
+  initAIChatbot();
 
   // If track is already saved, load it immediately without showing portal
   if (activeTrack) {
@@ -639,5 +640,145 @@ async function loadDynamicResume() {
     }
   } catch (e) {
     // Silent catch if storage is paused
+  }
+}
+
+/* ============================================
+   AI ASSISTANT CHATBOT
+   ============================================ */
+function initAIChatbot() {
+  const toggleBtn = document.getElementById("ai-chat-toggle");
+  const closeBtn = document.getElementById("chat-close-btn");
+  const chatWindow = document.getElementById("ai-chat-window");
+  const chatForm = document.getElementById("chat-input-form");
+  const chatInput = document.getElementById("chat-input");
+  const messagesContainer = document.getElementById("chat-messages");
+  const quickPills = document.querySelectorAll(".quick-pill");
+
+  if (!toggleBtn || !chatWindow) return;
+
+  toggleBtn.addEventListener("click", () => {
+    chatWindow.classList.toggle("chat-hidden");
+    if (!chatWindow.classList.contains("chat-hidden")) {
+      chatInput.focus();
+    }
+  });
+
+  closeBtn.addEventListener("click", () => {
+    chatWindow.classList.add("chat-hidden");
+  });
+
+  quickPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+      const q = pill.dataset.question;
+      handleUserQuery(q);
+    });
+  });
+
+  chatForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = chatInput.value.trim();
+    if (!q) return;
+    chatInput.value = "";
+    handleUserQuery(q);
+  });
+
+  function handleUserQuery(queryText) {
+    appendMessage(escapeHTML(queryText), "user");
+    showTypingIndicator();
+
+    setTimeout(() => {
+      removeTypingIndicator();
+      const response = generateAIResponse(queryText);
+      appendMessage(response, "bot");
+    }, 550);
+  }
+
+  function appendMessage(htmlContent, sender) {
+    const div = document.createElement("div");
+    div.className = `chat-bubble ${sender}-bubble`;
+    div.innerHTML = htmlContent;
+    messagesContainer.appendChild(div);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  function showTypingIndicator() {
+    const div = document.createElement("div");
+    div.id = "chat-typing-indicator";
+    div.className = "chat-bubble bot-bubble typing-bubble";
+    div.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span>`;
+    messagesContainer.appendChild(div);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  function removeTypingIndicator() {
+    const ind = document.getElementById("chat-typing-indicator");
+    if (ind) ind.remove();
+  }
+
+  function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+  }
+
+  function generateAIResponse(q) {
+    const text = q.toLowerCase();
+
+    if (text.includes("why hire") || text.includes("why should") || text.includes("hire him") || text.includes("reason")) {
+      return `💡 <strong>Why Hire Mir Furqaan?</strong><br><br>
+1. <strong>Dual Career Strengths:</strong> He combines deep Data Analytics expertise (SQL, Power BI, Python) with modern Software & Generative AI engineering.<br>
+2. <strong>Solid Foundation:</strong> MCA graduate from Lovely Professional University skilled in turning complex datasets into actionable business insights.<br>
+3. <strong>Building Real Value:</strong> Experienced in creating production-ready full-stack AI web apps, interactive BI dashboards, and ML models.<br><br>
+He is proactive, adaptable, and ready to deliver immediate value!`;
+    }
+
+    if (text.includes("skill") || text.includes("tech") || text.includes("tool") || text.includes("python") || text.includes("sql") || text.includes("power bi") || text.includes("react")) {
+      return `🛠️ <strong>Mir Furqaan's Core Skills:</strong><br><br>
+• 📊 <strong>Data Analytics & BI:</strong> SQL, Python, Power BI, Excel, Pandas, NumPy, Data Visualization<br>
+• 🧠 <strong>Gen AI & Software:</strong> LLMs & Gen AI, PyTorch, Machine Learning, React, HTML, CSS, JavaScript, REST APIs, Git & GitHub<br><br>
+Switch modes using the navbar button at the top to explore skills filtered for each role!`;
+    }
+
+    if (text.includes("project") || text.includes("portfolio") || text.includes("work") || text.includes("hotel") || text.includes("netflix") || text.includes("sales")) {
+      return `📂 <strong>Featured Projects:</strong><br><br>
+• 📊 <strong>E-Commerce Sales Analytics:</strong> $2M+ retail data analysis using SQL & Power BI.<br>
+• 🧠 <strong>Hotel Booking Web App:</strong> Interactive React full-stack booking application.<br>
+• 🐍 <strong>Healthcare & Netflix EDA:</strong> Exploratory data analysis in Python & Seaborn.<br>
+• 🤖 <strong>Student Performance Predictor:</strong> Machine learning model predicting academic success.<br><br>
+Scroll to the <strong>Projects</strong> section to view live previews & code!`;
+    }
+
+    if (text.includes("education") || text.includes("degree") || text.includes("university") || text.includes("lpu") || text.includes("mca") || text.includes("background")) {
+      return `🎓 <strong>Education & Background:</strong><br><br>
+• <strong>Degree:</strong> Master of Computer Applications (MCA)<br>
+• <strong>University:</strong> Lovely Professional University (2023 – 2025)<br>
+• <strong>Location:</strong> Kashmir, India<br>
+• <strong>Focus:</strong> Data Analytics, Business Intelligence & Generative AI Development`;
+    }
+
+    if (text.includes("contact") || text.includes("email") || text.includes("reach") || text.includes("linkedin") || text.includes("github") || text.includes("phone")) {
+      return `📬 <strong>How to Reach Mir Furqaan:</strong><br><br>
+• ✉️ <strong>Email:</strong> mirfurkaan106@gmail.com<br>
+• 💼 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/mir-furqaan-96b527291/" target="_blank" style="color:var(--primary);">linkedin.com/in/mir-furqaan</a><br>
+• 🐙 <strong>GitHub:</strong> <a href="https://github.com/MirFurqaan106" target="_blank" style="color:var(--primary);">github.com/MirFurqaan106</a><br><br>
+You can also use the <strong>Contact Form</strong> below to send him a direct email!`;
+    }
+
+    if (text.includes("resume") || text.includes("cv") || text.includes("download")) {
+      return `📄 <strong>Role-Specific Resumes:</strong><br><br>
+Mir Furqaan has two tailored resumes:<br>
+• 📊 <strong>Data Analyst Resume</strong><br>
+• 🧠 <strong>Gen AI Developer Resume</strong><br><br>
+Click the <strong>Download Resume</strong> button at the top or bottom of the page to download the version matching your role!`;
+    }
+
+    return `🤖 I'm <strong>Furqaan's AI Assistant</strong>! I can help answer questions about:<br><br>
+• 💡 <strong>Why you should hire Mir Furqaan</strong><br>
+• 🛠️ <strong>His key technical skills & tools</strong><br>
+• 📂 <strong>His featured projects & live demos</strong><br>
+• 🎓 <strong>His MCA education & background</strong><br>
+• 📬 <strong>How to get in touch or download his CV</strong><br><br>
+Feel free to ask a question or click one of the suggestion pills below!`;
   }
 }

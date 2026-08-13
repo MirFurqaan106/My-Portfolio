@@ -619,6 +619,47 @@
 
   </div>
 
+  <!-- AI Assistant Chatbot Widget -->
+  <div id="ai-chat-widget">
+    <button id="ai-chat-toggle" aria-label="Open Furqaan AI Assistant">
+      <span class="chat-toggle-icon">🤖</span>
+      <span class="chat-toggle-text">Ask AI Assistant</span>
+    </button>
+
+    <div id="ai-chat-window" class="chat-hidden">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <span class="chat-avatar">🤖</span>
+          <div>
+            <h4>Furqaan AI Assistant</h4>
+            <span class="chat-status"><span class="status-dot"></span> Online | Ask me anything!</span>
+          </div>
+        </div>
+        <button id="chat-close-btn" aria-label="Close Chat">&times;</button>
+      </div>
+
+      <div id="chat-messages" class="chat-messages">
+        <div class="chat-bubble bot-bubble">
+          👋 Hi there! I'm <strong>Furqaan's AI Assistant</strong>. Ask me anything about Mir Furqaan's skills, projects, background, or why you should hire him!
+        </div>
+      </div>
+
+      <div class="chat-quick-questions">
+        <button class="quick-pill" data-question="Why hire Mir Furqaan?">💡 Why Hire Him?</button>
+        <button class="quick-pill" data-question="What are his key skills?">🛠️ Key Skills</button>
+        <button class="quick-pill" data-question="Tell me about his projects">📂 Projects</button>
+        <button class="quick-pill" data-question="What is his background & education?">🎓 Education</button>
+      </div>
+
+      <form id="chat-input-form" class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask a question..." autocomplete="off" />
+        <button type="submit" id="chat-send-btn" aria-label="Send message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- Back to Top -->
   <button class="back-to-top" aria-label="Back to top">
     <i class="fas fa-chevron-up" aria-hidden="true"></i>
