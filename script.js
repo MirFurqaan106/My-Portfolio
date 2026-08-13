@@ -397,34 +397,132 @@ function initThemeToggle() {
 }
 
 /* ============================================
-   SUPABASE DYNAMIC LOADERS
+   FALLBACK DATA (Used if Supabase is paused or unreachable)
+   ============================================ */
+const DEFAULT_PROJECTS = [
+  {
+    title: "E-Commerce Sales Analytics Dashboard",
+    description: "Interactive Power BI and SQL dashboard analyzing $2M+ in retail sales data, customer retention metrics, and regional revenue performance.",
+    badge: "Dashboard",
+    tech_stack: ["SQL", "Power BI", "DAX", "Excel"],
+    image_url: "./assets/images/ecommerce_sales.jpg",
+    github_url: "https://github.com/MirFurqaan106",
+    demo_url: "./assets/images/ecommerce_sales.jpg",
+    category_track: "data"
+  },
+  {
+    title: "Healthcare Analytics & Patient Insights",
+    description: "Python data processing and exploratory analysis on patient health metrics, hospital stay durations, and treatment effectiveness.",
+    badge: "Data Science",
+    tech_stack: ["Python", "Pandas", "Seaborn", "Matplotlib"],
+    image_url: "./assets/images/healthcare_analytics.jpg",
+    github_url: "https://github.com/MirFurqaan106",
+    demo_url: "./assets/images/healthcare_analytics.jpg",
+    category_track: "data"
+  },
+  {
+    title: "Netflix Content & Genre Analysis",
+    description: "In-depth EDA and data visualization of Netflix movies and TV shows dataset to uncover content addition trends and country distributions.",
+    badge: "Analytics",
+    tech_stack: ["Python", "Pandas", "Plotly", "Jupyter"],
+    image_url: "./assets/images/netflix_analysis.jpg",
+    github_url: "https://github.com/MirFurqaan106",
+    demo_url: "./assets/images/netflix_analysis.jpg",
+    category_track: "data"
+  },
+  {
+    title: "Hotel Booking Web Application",
+    description: "A fully responsive, interactive web application built with React that allows users to search hotel rooms, check availability, and book rooms seamlessly.",
+    badge: "Web Application",
+    tech_stack: ["React", "JavaScript", "HTML", "CSS"],
+    image_url: "./assets/images/hotel_booking.jpg",
+    github_url: "https://github.com/MirFurqaan106",
+    demo_url: "./assets/images/hotel_booking.jpg",
+    category_track: "software"
+  },
+  {
+    title: "Student Performance Prediction",
+    description: "Machine Learning model predicting student academic performance based on demographic, study habits, and socioeconomic factors.",
+    badge: "Machine Learning",
+    tech_stack: ["Python", "Scikit-Learn", "Pandas", "Streamlit"],
+    image_url: "./assets/images/student_performance.jpg",
+    github_url: "https://github.com/MirFurqaan106",
+    demo_url: "./assets/images/student_performance.jpg",
+    category_track: "both"
+  },
+  {
+    title: "Music Genre Popularity Analysis",
+    description: "Data analysis project exploring audio features of songs to classify music genres and visualize listener trends over time.",
+    badge: "Data Analysis",
+    tech_stack: ["Python", "NumPy", "Pandas", "Matplotlib"],
+    image_url: "./assets/images/music_genre.jpg",
+    github_url: "https://github.com/MirFurqaan106",
+    demo_url: "./assets/images/music_genre.jpg",
+    category_track: "both"
+  }
+];
+
+const DEFAULT_CERTS = [
+  {
+    title: "Microsoft Power BI Data Analyst",
+    issuer: "Microsoft / Coursera",
+    icon: "📊",
+    pdf_url: "#",
+    category_track: "data"
+  },
+  {
+    title: "Python for Data Science & AI",
+    issuer: "IBM",
+    icon: "🐍",
+    pdf_url: "#",
+    category_track: "both"
+  },
+  {
+    title: "SQL & Relational Database Essentials",
+    issuer: "IBM",
+    icon: "🗄️",
+    pdf_url: "#",
+    category_track: "both"
+  }
+];
+
+/* ============================================
+   SUPABASE DYNAMIC LOADERS (With Fallback Resilience)
    ============================================ */
 async function loadDynamicProjects() {
-  if (!activeTrack) return;
+  const currentTrack = activeTrack || "data";
   const container = document.getElementById("projects-grid");
-  if (!container || !supabaseClient) return;
+  if (!container) return;
 
-  const { data, error } = await supabaseClient.from("projects").select("*").order("created_at", { ascending: true });
-
-  if (error || !data || data.length === 0) {
-    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No projects found. Add them from your admin dashboard!</p>`;
-    return;
+  let data = null;
+  if (supabaseClient) {
+    try {
+      const res = await supabaseClient.from("projects").select("*").order("created_at", { ascending: true });
+      if (!res.error && res.data && res.data.length > 0) {
+        data = res.data;
+      }
+    } catch (e) {
+      console.warn("Supabase projects fetch failed, using fallback data.", e);
+    }
   }
 
-  // Filter in-memory by track
-  const filteredData = data.filter(p => !p.category_track || p.category_track === 'both' || p.category_track === activeTrack);
-
-  if (filteredData.length === 0) {
-    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No projects found for the selected career track.</p>`;
-    return;
+  // Use default projects if Supabase is paused or unreachable
+  if (!data || data.length === 0) {
+    data = DEFAULT_PROJECTS;
   }
+
+  const filteredData = data.filter(p => !p.category_track || p.category_track === 'both' || p.category_track === currentTrack);
 
   container.innerHTML = "";
   filteredData.forEach(p => {
-    const tagsHTML = p.tech_stack.map(tag => `<span class="tech-tag">${tag}</span>`).join("");
-    
-    // Check if demo link is a full URL or a picture
-    const isImageDemo = p.demo_url.startsWith("./") || p.demo_url.includes(".jpg") || p.demo_url.includes(".png") || p.demo_url.includes(".webp");
+    const stackArray = Array.isArray(p.tech_stack)
+      ? p.tech_stack
+      : (typeof p.tech_stack === 'string' ? p.tech_stack.split(',').map(s => s.trim()).filter(Boolean) : []);
+
+    const tagsHTML = stackArray.map(tag => `<span class="tech-tag">${tag}</span>`).join("");
+
+    const demoUrl = p.demo_url || "#";
+    const isImageDemo = demoUrl.startsWith("./") || demoUrl.includes(".jpg") || demoUrl.includes(".png") || demoUrl.includes(".webp");
     const demoIcon = isImageDemo ? "fas fa-image" : "fas fa-external-link-alt";
     const demoLabel = isImageDemo ? "View Preview" : "Live Demo";
 
@@ -433,22 +531,22 @@ async function loadDynamicProjects() {
     article.innerHTML = `
       <div class="project-img-wrap">
         <img
-          src="${p.image_url}"
-          alt="${p.title} screenshot"
+          src="${p.image_url || './assets/images/ecommerce_sales.jpg'}"
+          alt="${p.title || 'Project'} screenshot"
           loading="lazy"
           width="600" height="200"
         />
-        <span class="project-badge">${p.badge}</span>
+        <span class="project-badge">${p.badge || 'Project'}</span>
       </div>
       <div class="project-body">
-        <h3>${p.title}</h3>
-        <p>${p.description}</p>
+        <h3>${p.title || 'Untitled Project'}</h3>
+        <p>${p.description || ''}</p>
         <div class="tech-stack">${tagsHTML}</div>
         <div class="project-links">
-          <a href="${p.github_url}" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View ${p.title} on GitHub">
+          <a href="${p.github_url || '#'}" target="_blank" rel="noopener noreferrer" class="link-github" aria-label="View ${p.title} on GitHub">
             <i class="fab fa-github" aria-hidden="true"></i> GitHub
           </a>
-          <a href="${p.demo_url}" target="_blank" class="link-demo" aria-label="View ${p.title} demo">
+          <a href="${demoUrl}" target="_blank" class="link-demo" aria-label="View ${p.title} demo">
             <i class="${demoIcon}" aria-hidden="true"></i> ${demoLabel}
           </a>
         </div>
@@ -460,35 +558,39 @@ async function loadDynamicProjects() {
 }
 
 async function loadDynamicCertifications() {
-  if (!activeTrack) return;
+  const currentTrack = activeTrack || "data";
   const container = document.getElementById("certs-grid");
-  if (!container || !supabaseClient) return;
+  if (!container) return;
 
-  const { data, error } = await supabaseClient.from("certifications").select("*").order("created_at", { ascending: true });
-
-  if (error || !data || data.length === 0) {
-    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No certifications found. Add them from your admin dashboard!</p>`;
-    return;
+  let data = null;
+  if (supabaseClient) {
+    try {
+      const res = await supabaseClient.from("certifications").select("*").order("created_at", { ascending: true });
+      if (!res.error && res.data && res.data.length > 0) {
+        data = res.data;
+      }
+    } catch (e) {
+      console.warn("Supabase certifications fetch failed, using fallback data.", e);
+    }
   }
 
-  // Filter in-memory by track
-  const filteredData = data.filter(c => !c.category_track || c.category_track === 'both' || c.category_track === activeTrack);
-
-  if (filteredData.length === 0) {
-    container.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">No certifications found for the selected career track.</p>`;
-    return;
+  // Use default certifications if Supabase is paused or unreachable
+  if (!data || data.length === 0) {
+    data = DEFAULT_CERTS;
   }
+
+  const filteredData = data.filter(c => !c.category_track || c.category_track === 'both' || c.category_track === currentTrack);
 
   container.innerHTML = "";
   filteredData.forEach(c => {
     const card = document.createElement("div");
     card.className = "cert-card reveal";
     card.innerHTML = `
-      <div class="cert-icon" aria-hidden="true">${c.icon}</div>
+      <div class="cert-icon" aria-hidden="true">${c.icon || '📜'}</div>
       <div class="cert-info">
-        <h4>${c.title}</h4>
-        <p>${c.issuer}</p>
-        <a href="${c.pdf_url}" target="_blank" rel="noopener noreferrer" aria-label="View ${c.title} certificate">
+        <h4>${c.title || 'Certification'}</h4>
+        <p>${c.issuer || ''}</p>
+        <a href="${c.pdf_url || '#'}" target="_blank" rel="noopener noreferrer" aria-label="View ${c.title} certificate">
           View Certificate <i class="fas fa-arrow-right" aria-hidden="true"></i>
         </a>
       </div>
@@ -499,21 +601,19 @@ async function loadDynamicCertifications() {
 }
 
 async function loadDynamicResume() {
-  if (!activeTrack) return;
   if (!supabaseClient) return;
 
-  const { data } = supabaseClient.storage.from("resumes").getPublicUrl("Mir_Furqaan_Hassan_Resume_.pdf");
-  
-  if (data && data.publicUrl) {
-    try {
+  try {
+    const { data } = supabaseClient.storage.from("resumes").getPublicUrl("Mir_Furqaan_Hassan_Resume_.pdf");
+    if (data && data.publicUrl) {
       const response = await fetch(data.publicUrl, { method: 'HEAD' });
       if (response.ok) {
         document.querySelectorAll(".resume-link").forEach(link => {
           link.href = data.publicUrl;
         });
       }
-    } catch (e) {
-      console.warn("Storage CV not found or inaccessible, keeping local link.", e);
     }
+  } catch (e) {
+    console.warn("Storage CV lookup skipped or paused.", e);
   }
 }
