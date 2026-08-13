@@ -149,8 +149,8 @@ function setPortfolioTrack(track) {
   const switcherText = document.getElementById("track-toggle-text");
   if (switcherText) {
     switcherText.innerHTML = (track === "data") 
-      ? '<i class="fas fa-chart-bar" aria-hidden="true"></i> Data Mode' 
-      : '<i class="fas fa-brain" aria-hidden="true"></i> Dev Mode';
+      ? '<i class="fas fa-chart-bar" aria-hidden="true"></i> Data Analytics' 
+      : '<i class="fas fa-brain" aria-hidden="true"></i> Gen AI';
   }
 
   // 2. Set skills filter class
