@@ -397,17 +397,25 @@
       <div id="cv-tab" class="tab-content">
         <div class="cv-box">
           <i class="fas fa-file-pdf"></i>
-          <h3>Update Resume PDF</h3>
-          <p style="margin-bottom: 20px;">Upload a new PDF to overwrite your active CV. Supported formats: .pdf</p>
+          <h3>Update Role-Specific Resume PDF</h3>
+          <p style="margin-bottom: 20px;">Select which portfolio role's resume you want to update and upload the PDF file.</p>
           
           <form id="cv-upload-form">
+            <div class="form-group" style="margin-bottom: 18px; text-align: left;">
+              <label for="cv-role-select" style="font-size: 13px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px;">Target Career Track / Role</label>
+              <select id="cv-role-select" style="background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white; padding: 10px; font-family: inherit; font-size: 14px; width: 100%;">
+                <option value="data">📊 Data Analytics Resume (Data Analyst)</option>
+                <option value="software">🧠 Software & Gen AI Developer Resume (Gen AI Developer)</option>
+              </select>
+            </div>
+
             <input type="file" id="cv-file-input" accept=".pdf" required style="display:none;" />
             <button type="button" class="btn btn-outline" onclick="document.getElementById('cv-file-input').click()" style="width:100%; justify-content:center; margin-bottom:14px;">
               <i class="fas fa-cloud-upload-alt"></i> Choose PDF File
             </button>
             <span id="cv-file-name" style="display:block; font-size:12px; color:var(--text-secondary); margin-bottom:14px; font-weight:500;">No file selected</span>
             <button type="submit" class="submit-btn" id="cv-submit-btn" disabled>
-              Upload and Update CV
+              Upload and Update Resume
             </button>
           </form>
         </div>
@@ -894,13 +902,16 @@
       const file = fileInput.files[0];
       if (!file) return;
 
+      const role = document.getElementById("cv-role-select").value;
+      const fileName = (role === "software") 
+        ? "Mir_Furqaan_Gen_AI_Developer_Resume.pdf" 
+        : "Mir_Furqaan_Data_Analyst_Resume.pdf";
+      const roleName = (role === "software") ? "Software & Gen AI Developer" : "Data Analytics";
+
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
 
-      // Upload to resumes storage bucket (we use a fixed name so we can overwrite it easily)
-      const fileName = "Mir_Furqaan_Hassan_Resume_.pdf";
-      
-      // We use upsert: true so it overwrites any existing file
+      // Upload to resumes storage bucket with upsert
       const { data, error } = await supabaseClient.storage
         .from("resumes")
         .upload(fileName, file, {
@@ -910,13 +921,15 @@
 
       if (error) {
         showAlert("db-alert", "CV Upload failed: " + error.message, "error");
+        alert("❌ CV Upload failed:\n" + error.message);
       } else {
-        showAlert("db-alert", "CV Uploaded and updated successfully!", "success");
+        showAlert("db-alert", `${roleName} Resume updated successfully!`, "success");
+        alert(`✅ ${roleName} Resume updated successfully!`);
         document.getElementById("cv-upload-form").reset();
         document.getElementById("cv-file-name").textContent = "No file selected";
       }
       btn.disabled = false;
-      btn.innerHTML = "Upload and Update CV";
+      btn.innerHTML = "Upload and Update Resume";
     });
   </script>
 </body>

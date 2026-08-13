@@ -609,13 +609,31 @@ async function loadDynamicCertifications() {
 async function loadDynamicResume() {
   if (!supabaseClient) return;
 
+  const currentTrack = activeTrack || "data";
+  const fileName = (currentTrack === "software") 
+    ? "Mir_Furqaan_Gen_AI_Developer_Resume.pdf" 
+    : "Mir_Furqaan_Data_Analyst_Resume.pdf";
+
   try {
-    const { data } = supabaseClient.storage.from("resumes").getPublicUrl("Mir_Furqaan_Hassan_Resume_.pdf");
+    // 1. Try role-specific CV from Supabase storage
+    const { data } = supabaseClient.storage.from("resumes").getPublicUrl(fileName);
     if (data && data.publicUrl) {
       const response = await fetch(data.publicUrl, { method: 'HEAD' }).catch(() => null);
       if (response && response.ok) {
         document.querySelectorAll(".resume-link").forEach(link => {
           link.href = data.publicUrl;
+        });
+        return;
+      }
+    }
+
+    // 2. Fallback to default CV from Supabase storage
+    const defaultRes = supabaseClient.storage.from("resumes").getPublicUrl("Mir_Furqaan_Hassan_Resume_.pdf");
+    if (defaultRes && defaultRes.data && defaultRes.data.publicUrl) {
+      const response = await fetch(defaultRes.data.publicUrl, { method: 'HEAD' }).catch(() => null);
+      if (response && response.ok) {
+        document.querySelectorAll(".resume-link").forEach(link => {
+          link.href = defaultRes.data.publicUrl;
         });
       }
     }
